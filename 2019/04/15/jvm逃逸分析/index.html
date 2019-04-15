@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="maven,spring,">
+  <meta name="keywords" content="jvm,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="在maven的pom文件中可以设置profile标签.在旧版的springMVC中可以通过这种方式结合filter和resource标签指定当前加载的配置文件. 在springboot中没必要这么麻烦 因为springboot会根据当前激活的profile自动加载application-{profile}.properties配置文件. 注意这里maven中的profile和spring中的pro">
-<meta name="keywords" content="maven,spring">
+<meta name="description" content="逃逸分析(Escape Analysis)是JIT中常用的一种技术,其基本行为就是动态分析对象的作用域,之后做出相应的优化开启逃逸分析的jvm参数：12345678910### 方法逃逸一个在方法内创建的对象，如果会在方法外被访问，那么就称这个对象存住方法逃逸。方法逃逸可以以返回值、field属性、对象作为参数传入等形式发生，下面这个例子就是不存在方法逃逸，StringBuffer对象在testE">
+<meta name="keywords" content="jvm">
 <meta property="og:type" content="article">
-<meta property="og:title" content="通过maven profile配置运行环境以及@...@占位符使用">
-<meta property="og:url" content="http://yoursite.com/2019/03/28/mavenProfile/index.html">
+<meta property="og:title" content="jvm逃逸分析">
+<meta property="og:url" content="http://yoursite.com/2019/04/15/jvm逃逸分析/index.html">
 <meta property="og:site_name" content="neuSnail&#39;s blog">
-<meta property="og:description" content="在maven的pom文件中可以设置profile标签.在旧版的springMVC中可以通过这种方式结合filter和resource标签指定当前加载的配置文件. 在springboot中没必要这么麻烦 因为springboot会根据当前激活的profile自动加载application-{profile}.properties配置文件. 注意这里maven中的profile和spring中的pro">
+<meta property="og:description" content="逃逸分析(Escape Analysis)是JIT中常用的一种技术,其基本行为就是动态分析对象的作用域,之后做出相应的优化开启逃逸分析的jvm参数：12345678910### 方法逃逸一个在方法内创建的对象，如果会在方法外被访问，那么就称这个对象存住方法逃逸。方法逃逸可以以返回值、field属性、对象作为参数传入等形式发生，下面这个例子就是不存在方法逃逸，StringBuffer对象在testE">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-28T06:43:46.262Z">
+<meta property="og:updated_time" content="2019-04-15T05:42:34.835Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="通过maven profile配置运行环境以及@...@占位符使用">
-<meta name="twitter:description" content="在maven的pom文件中可以设置profile标签.在旧版的springMVC中可以通过这种方式结合filter和resource标签指定当前加载的配置文件. 在springboot中没必要这么麻烦 因为springboot会根据当前激活的profile自动加载application-{profile}.properties配置文件. 注意这里maven中的profile和spring中的pro">
+<meta name="twitter:title" content="jvm逃逸分析">
+<meta name="twitter:description" content="逃逸分析(Escape Analysis)是JIT中常用的一种技术,其基本行为就是动态分析对象的作用域,之后做出相应的优化开启逃逸分析的jvm参数：12345678910### 方法逃逸一个在方法内创建的对象，如果会在方法外被访问，那么就称这个对象存住方法逃逸。方法逃逸可以以返回值、field属性、对象作为参数传入等形式发生，下面这个例子就是不存在方法逃逸，StringBuffer对象在testE">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/03/28/mavenProfile/">
+  <link rel="canonical" href="http://yoursite.com/2019/04/15/jvm逃逸分析/">
 
 
 
 
 
-  <title>通过maven profile配置运行环境以及@...@占位符使用 | neuSnail's blog</title>
+  <title>jvm逃逸分析 | neuSnail's blog</title>
   
 
 
@@ -263,7 +263,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/28/mavenProfile/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/15/jvm逃逸分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="neuSnail">
@@ -280,7 +280,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">通过maven profile配置运行环境以及@...@占位符使用</h2>
+          <h2 class="post-title" itemprop="name headline">jvm逃逸分析</h2>
         
 
         <div class="post-meta">
@@ -292,8 +292,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-28T13:19:48+08:00">
-                2019-03-28
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-15T12:14:49+08:00">
+                2019-04-15
               </time>
             
 
@@ -302,6 +302,28 @@
             
           </span>
 
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -330,20 +352,13 @@
       
 
       
-        <p>在maven的pom文件中可以设置profile标签.在旧版的springMVC中可以通过这种方式结合filter和resource标签指定当前加载的配置文件.</p>
-<p>在springboot中没必要这么麻烦 因为springboot会根据当前激活的profile自动加载application-{profile}.properties配置文件.</p>
-<p><strong>注意这里maven中的profile和spring中的profile(spring.profiles.active)完全不是一个东西,maven的profile是只在编译(build)时生效的,而spring的profile是在运行时(runtime)使用的</strong></p>
-<p>所以现在的目的就是通过maven的profile指定spring的profile.这一步可以通过占位符(delimiter)来实现. 如果你使用的是spring-boot-starter-parent可以直接按如下配置:</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">profiles</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">profile</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 本地开发环境 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">id</span>&gt;</span>dev<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">env</span>&gt;</span>dev<span class="tag">&lt;/<span class="name">env</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">activation</span>&gt;</span></span><br><span class="line">                <span class="comment">&lt;!-- 设置默认激活这个配置 --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">activeByDefault</span>&gt;</span>true<span class="tag">&lt;/<span class="name">activeByDefault</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">activation</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">profile</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">profile</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 测试环境 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">id</span>&gt;</span>test<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">env</span>&gt;</span>test<span class="tag">&lt;/<span class="name">env</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">profile</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">profiles</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>之后在application.properties中加上一行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spring.profiles.active=@env@</span><br></pre></td></tr></table></figure></p>
-<p>在pom中我们为不同的profile配置了一个<code>env</code>属性,该属性可以在application.properties中通过占位符@...@来引用<br>在使用时我一直好奇这个@占位符是在哪定义的,后来在spring官方文档中终于查到是在spring-boot-starter-parent中定义的,这个文件在IDEA中可以直接点进去编辑,或者直接在下面的路径中找到打开编辑</p>
-<p>.m2/repository/org/springframework/boot/spring-boot-starter-parent/2.1.0.RELEASE/spring-boot-starter-parent-2.1.0.RELEASE.pom</p>
-<p><em>(当然在实际使用时不应该直接编辑这个 parent而应该在自己的pom中重写属性)</em></p>
-<p>在properties标签中可以找到该分隔符的定义<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">resource.delimiter</span>&gt;</span>@<span class="tag">&lt;/<span class="name">resource.delimiter</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>这里可以修改这个配置改成我们想用的分割符比如<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">resource.delimiter</span>&gt;</span>^<span class="tag">&lt;/<span class="name">resource.delimiter</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>之后在配置文件中就可以这样使用了<code>spring.profiles.active=^env^</code></p>
-<p>如果想使用spring之前默认的占位符${…} 可以把这行注释掉,之后修改useDefaultDelimiters为true</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">delimiters</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">delimiter</span>&gt;</span>$&#123;resource.delimiter&#125;<span class="tag">&lt;/<span class="name">delimiter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">delimiters</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">useDefaultDelimiters</span>&gt;</span>true<span class="tag">&lt;/<span class="name">useDefaultDelimiters</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+        <p>逃逸分析(Escape Analysis)是JIT中常用的一种技术,其基本行为就是动态分析对象的作用域,之后做出相应的优化<br>开启逃逸分析的jvm参数：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 方法逃逸</span><br><span class="line">一个在方法内创建的对象，如果会在方法外被访问，那么就称这个对象存住方法逃逸。</span><br><span class="line">方法逃逸可以以返回值、field属性、对象作为参数传入等形式发生，下面这个例子就是不存在方法逃逸，StringBuffer对象在testEscape方法中创建且对象本身不会被返回。</span><br><span class="line">```java</span><br><span class="line">public String testEscape() &#123;</span><br><span class="line">        StringBuffer stringBuffer = new StringBuffer();</span><br><span class="line">        stringBuffer.append(&quot;a&quot;);</span><br><span class="line">        return stringBuffer.toString();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="栈上分配"><a href="#栈上分配" class="headerlink" title="栈上分配"></a>栈上分配</h3><p>如果一个对象不存在方法逃逸，即说明这个对象不会在该线程栈外被访问。那这个对象就可能会分配在栈上，而不是分配在堆上。随着线程结束栈空间的清除而清除。这样节省了堆上的空间，减少了GC回收的压力。</p>
+<p>不过查了下资料很多人说Hotspot现在没有实现栈上分配</p>
+<h3 id="同步消除"><a href="#同步消除" class="headerlink" title="同步消除"></a>同步消除</h3><p>另一个体现了逃逸分析的功能就是同步消除，上面的例子中StringBuffer的append方法是加了锁的。如果jit发现某加锁代码块中的对象不存在方法逃逸，那就可能会消除该锁。启用同步消除需要配置额外参数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-XX:-EliminateLocks</span><br></pre></td></tr></table></figure></p>
+<h3 id="标量替换"><a href="#标量替换" class="headerlink" title="标量替换"></a>标量替换</h3><p>若一个对象被证明不会被外部访问，并且这个对象可以被拆解成若干个基本类型的形式，那么当程序真正执行的时候可以不创建这个对象，而是采用直接创建它的若干个被这个方法所使用到的成员变量来代替，将对象拆分后，除了可以让对象的成员变量在栈上分配和读写之外，还可以为后续进一步的优化手段创造条件。</p>
+<p>开启参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-XX:+EliminateAllocation</span><br></pre></td></tr></table></figure></p>
+
       
     </div>
     
@@ -360,9 +375,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/maven/" rel="tag"># maven</a>
-          
-            <a href="/tags/spring/" rel="tag"># spring</a>
+            <a href="/tags/jvm/" rel="tag"># jvm</a>
           
         </div>
       
@@ -375,8 +388,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/03/27/常用的httpCode/" rel="next" title="常用的http code">
-                <i class="fa fa-chevron-left"></i> 常用的http code
+              <a href="/2019/04/13/java引用类型/" rel="next" title="java引用类型与内存泄露">
+                <i class="fa fa-chevron-left"></i> java引用类型与内存泄露
               </a>
             
           </div>
@@ -384,10 +397,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/03/28/servlet/" rel="prev" title="servlet">
-                servlet <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -439,8 +448,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -502,6 +520,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#栈上分配"><span class="nav-number">1.</span> <span class="nav-text">栈上分配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同步消除"><span class="nav-number">2.</span> <span class="nav-text">同步消除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标量替换"><span class="nav-number">3.</span> <span class="nav-text">标量替换</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
