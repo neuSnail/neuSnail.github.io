@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="逃逸分析(Escape Analysis)是JIT中常用的一种技术,其基本行为就是动态分析对象的作用域,之后做出相应的优化开启逃逸分析的jvm参数：12345678910### 方法逃逸一个在方法内创建的对象，如果会在方法外被访问，那么就称这个对象存住方法逃逸。方法逃逸可以以返回值、field属性、对象作为参数传入等形式发生，下面这个例子就是不存在方法逃逸，StringBuffer对象在testE">
+<meta name="description" content="逃逸分析(Escape Analysis)是JIT中常用的一种技术,其基本行为就是动态分析对象的作用域,之后做出相应的优化开启逃逸分析的jvm参数：-XX:+DoEscapeAnalysis 方法逃逸一个在方法内创建的对象，如果会在方法外被访问，那么就称这个对象存住方法逃逸。方法逃逸可以以返回值、field属性、对象作为参数传入等形式发生，下面这个例子就是不存在方法逃逸，StringBuffer对">
 <meta name="keywords" content="jvm">
 <meta property="og:type" content="article">
 <meta property="og:title" content="jvm逃逸分析">
 <meta property="og:url" content="http://yoursite.com/2019/04/15/jvm逃逸分析/index.html">
 <meta property="og:site_name" content="neuSnail&#39;s blog">
-<meta property="og:description" content="逃逸分析(Escape Analysis)是JIT中常用的一种技术,其基本行为就是动态分析对象的作用域,之后做出相应的优化开启逃逸分析的jvm参数：12345678910### 方法逃逸一个在方法内创建的对象，如果会在方法外被访问，那么就称这个对象存住方法逃逸。方法逃逸可以以返回值、field属性、对象作为参数传入等形式发生，下面这个例子就是不存在方法逃逸，StringBuffer对象在testE">
+<meta property="og:description" content="逃逸分析(Escape Analysis)是JIT中常用的一种技术,其基本行为就是动态分析对象的作用域,之后做出相应的优化开启逃逸分析的jvm参数：-XX:+DoEscapeAnalysis 方法逃逸一个在方法内创建的对象，如果会在方法外被访问，那么就称这个对象存住方法逃逸。方法逃逸可以以返回值、field属性、对象作为参数传入等形式发生，下面这个例子就是不存在方法逃逸，StringBuffer对">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-04-15T05:42:34.835Z">
+<meta property="og:updated_time" content="2019-04-15T05:44:49.368Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="jvm逃逸分析">
-<meta name="twitter:description" content="逃逸分析(Escape Analysis)是JIT中常用的一种技术,其基本行为就是动态分析对象的作用域,之后做出相应的优化开启逃逸分析的jvm参数：12345678910### 方法逃逸一个在方法内创建的对象，如果会在方法外被访问，那么就称这个对象存住方法逃逸。方法逃逸可以以返回值、field属性、对象作为参数传入等形式发生，下面这个例子就是不存在方法逃逸，StringBuffer对象在testE">
+<meta name="twitter:description" content="逃逸分析(Escape Analysis)是JIT中常用的一种技术,其基本行为就是动态分析对象的作用域,之后做出相应的优化开启逃逸分析的jvm参数：-XX:+DoEscapeAnalysis 方法逃逸一个在方法内创建的对象，如果会在方法外被访问，那么就称这个对象存住方法逃逸。方法逃逸可以以返回值、field属性、对象作为参数传入等形式发生，下面这个例子就是不存在方法逃逸，StringBuffer对">
 
 
 
@@ -352,7 +352,8 @@
       
 
       
-        <p>逃逸分析(Escape Analysis)是JIT中常用的一种技术,其基本行为就是动态分析对象的作用域,之后做出相应的优化<br>开启逃逸分析的jvm参数：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 方法逃逸</span><br><span class="line">一个在方法内创建的对象，如果会在方法外被访问，那么就称这个对象存住方法逃逸。</span><br><span class="line">方法逃逸可以以返回值、field属性、对象作为参数传入等形式发生，下面这个例子就是不存在方法逃逸，StringBuffer对象在testEscape方法中创建且对象本身不会被返回。</span><br><span class="line">```java</span><br><span class="line">public String testEscape() &#123;</span><br><span class="line">        StringBuffer stringBuffer = new StringBuffer();</span><br><span class="line">        stringBuffer.append(&quot;a&quot;);</span><br><span class="line">        return stringBuffer.toString();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+        <p>逃逸分析(Escape Analysis)是JIT中常用的一种技术,其基本行为就是动态分析对象的作用域,之后做出相应的优化<br>开启逃逸分析的jvm参数：<code>-XX:+DoEscapeAnalysis</code></p>
+<h3 id="方法逃逸"><a href="#方法逃逸" class="headerlink" title="方法逃逸"></a>方法逃逸</h3><p>一个在方法内创建的对象，如果会在方法外被访问，那么就称这个对象存住方法逃逸。<br>方法逃逸可以以返回值、field属性、对象作为参数传入等形式发生，下面这个例子就是不存在方法逃逸，StringBuffer对象在testEscape方法中创建且对象本身不会被返回。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">testEscape</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        StringBuffer stringBuffer = <span class="keyword">new</span> StringBuffer();</span><br><span class="line">        stringBuffer.append(<span class="string">"a"</span>);</span><br><span class="line">        <span class="keyword">return</span> stringBuffer.toString();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
 <h3 id="栈上分配"><a href="#栈上分配" class="headerlink" title="栈上分配"></a>栈上分配</h3><p>如果一个对象不存在方法逃逸，即说明这个对象不会在该线程栈外被访问。那这个对象就可能会分配在栈上，而不是分配在堆上。随着线程结束栈空间的清除而清除。这样节省了堆上的空间，减少了GC回收的压力。</p>
 <p>不过查了下资料很多人说Hotspot现在没有实现栈上分配</p>
 <h3 id="同步消除"><a href="#同步消除" class="headerlink" title="同步消除"></a>同步消除</h3><p>另一个体现了逃逸分析的功能就是同步消除，上面的例子中StringBuffer的append方法是加了锁的。如果jit发现某加锁代码块中的对象不存在方法逃逸，那就可能会消除该锁。启用同步消除需要配置额外参数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-XX:-EliminateLocks</span><br></pre></td></tr></table></figure></p>
@@ -530,7 +531,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#栈上分配"><span class="nav-number">1.</span> <span class="nav-text">栈上分配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同步消除"><span class="nav-number">2.</span> <span class="nav-text">同步消除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标量替换"><span class="nav-number">3.</span> <span class="nav-text">标量替换</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#方法逃逸"><span class="nav-number">1.</span> <span class="nav-text">方法逃逸</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#栈上分配"><span class="nav-number">2.</span> <span class="nav-text">栈上分配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同步消除"><span class="nav-number">3.</span> <span class="nav-text">同步消除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标量替换"><span class="nav-number">4.</span> <span class="nav-text">标量替换</span></a></li></ol></div>
             
 
           </div>
