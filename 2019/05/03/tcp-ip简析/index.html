@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="tcp,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="OSI七层模型与TCP/IP五层模型  OSI（Open System Interconnect），即开放式系统互联模型是ISO（国际标准化组织）组织在1985年发布的网络模型,其结构如下:  其中的表示层负责提供各种用于应用层数据的编码和转换功能, 会话层负责建立、管理和终止表示层实体之间的通信会话. 这两层在TCP/IP模型中整合到了应用层.所以我们常用的TCP/IP模型一般只讨论5层:  可">
+<meta name="keywords" content="tcp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tcp&#x2F;ip简析">
+<meta property="og:url" content="http://yoursite.com/2019/05/03/tcp-ip简析/index.html">
+<meta property="og:site_name" content="neuSnail&#39;s blog">
+<meta property="og:description" content="OSI七层模型与TCP/IP五层模型  OSI（Open System Interconnect），即开放式系统互联模型是ISO（国际标准化组织）组织在1985年发布的网络模型,其结构如下:  其中的表示层负责提供各种用于应用层数据的编码和转换功能, 会话层负责建立、管理和终止表示层实体之间的通信会话. 这两层在TCP/IP模型中整合到了应用层.所以我们常用的TCP/IP模型一般只讨论5层:  可">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/Users/zhangqiushi/Library/Application%20Support/typora-user-images/image-20190503131546100.png">
+<meta property="og:image" content="http://yoursite.com/Users/zhangqiushi/Library/Application%20Support/typora-user-images/image-20190503131508854.png">
+<meta property="og:image" content="http://yoursite.com/Users/zhangqiushi/Downloads/net协议.png">
+<meta property="og:image" content="http://yoursite.com/Users/zhangqiushi/Library/Application%20Support/typora-user-images/image-20190503134026958.png">
+<meta property="og:image" content="http://yoursite.com/Users/zhangqiushi/Downloads/net_package.png">
+<meta property="og:image" content="http://yoursite.com/Users/zhangqiushi/Library/Application%20Support/typora-user-images/image-20190503222544384.png">
+<meta property="og:image" content="http://yoursite.com/Users/zhangqiushi/Library/Application%20Support/typora-user-images/image-20190503214011085.png">
+<meta property="og:image" content="http://yoursite.com/Users/zhangqiushi/Library/Application%20Support/typora-user-images/image-20190503224512958.png">
+<meta property="og:image" content="http://yoursite.com/Users/zhangqiushi/Library/Application%20Support/typora-user-images/image-20190503223327645.png">
+<meta property="og:updated_time" content="2019-05-03T14:46:58.843Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="tcp&#x2F;ip简析">
+<meta name="twitter:description" content="OSI七层模型与TCP/IP五层模型  OSI（Open System Interconnect），即开放式系统互联模型是ISO（国际标准化组织）组织在1985年发布的网络模型,其结构如下:  其中的表示层负责提供各种用于应用层数据的编码和转换功能, 会话层负责建立、管理和终止表示层实体之间的通信会话. 这两层在TCP/IP模型中整合到了应用层.所以我们常用的TCP/IP模型一般只讨论5层:  可">
+<meta name="twitter:image" content="http://yoursite.com/Users/zhangqiushi/Library/Application%20Support/typora-user-images/image-20190503131546100.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/05/03/tcp-ip简析/">
+
+
+
+
+
+  <title>tcp/ip简析 | neuSnail's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">neuSnail's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">how you find this?</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/03/tcp-ip简析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="neuSnail">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="neuSnail's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">tcp/ip简析</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-03T12:43:02+08:00">
+                2019-05-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机网络/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机网络</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="OSI七层模型与TCP-IP五层模型"><a href="#OSI七层模型与TCP-IP五层模型" class="headerlink" title="OSI七层模型与TCP/IP五层模型"></a>OSI七层模型与TCP/IP五层模型</h3><p>  OSI（Open System Interconnect），即开放式系统互联模型是ISO（国际标准化组织）组织在1985年发布的网络模型,其结构如下:</p>
+<p><img src="/Users/zhangqiushi/Library/Application Support/typora-user-images/image-20190503131546100.png" alt="image-20190503131546100"></p>
+<p>其中的表示层负责提供各种用于应用层数据的编码和转换功能, 会话层负责建立、管理和终止表示层实体之间的通信会话. 这两层在TCP/IP模型中整合到了应用层.所以我们常用的TCP/IP模型一般只讨论5层:</p>
+<p><img src="/Users/zhangqiushi/Library/Application Support/typora-user-images/image-20190503131508854.png" alt="image-20190503131508854"></p>
+<p>可以看到从应用层发出的数据,每经过一层都会添加上该层特有的header,终端收到数据包之后又会一层层解除头部拿到原始数据:</p>
+<blockquote>
+<p>图片摘自阮一峰的博客<a href="http://www.ruanyifeng.com/blog/2017/06/tcp-protocol.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2017/06/tcp-protocol.html</a></p>
+</blockquote>
+<p><img src="/Users/zhangqiushi/Downloads/net协议.png" alt="net协议"></p>
+<h4 id="物理层"><a href="#物理层" class="headerlink" title="物理层"></a>物理层</h4><p>物理层， 为数据端设备提供传送数据的通路。可以双向通信，为数据传输提供可靠的环境。对应我们的网线、光纤(物理设备)。</p>
+<p>这一层不详细展开了,只说下物理层通信原理的一个重要概念:</p>
+<ul>
+<li>单工：单向通道，只能单向通信。比如广播。</li>
+</ul>
+<ul>
+<li>半双工：双向通道,但同一时间点只能一方通信。比如对讲机。</li>
+<li>全双工：双向通道，相互通信。互不干扰。比如：电话。</li>
+</ul>
+<h4 id="数据链路层"><a href="#数据链路层" class="headerlink" title="数据链路层"></a>数据链路层</h4><p>数据链路层在两个网络实体之间提供数据链路连接的创建、维持和释放管理。</p>
+<p>数据链路层只负责数据的封装成祯和透明传输,不保证祯的可靠性,可靠性是tcp协议实现的</p>
+<p>数据链路层职责:</p>
+<ul>
+<li><p>封装成帧</p>
+<p>将网络层交付下来的ip数据报的前后添加首部和尾部，封装成帧。首部和尾部的重要作用是进行帧定界。为了提高传输效率，需要尽量增大数据部分的长度，但是每个链路层协议都规定了帧数据部分的长度上限，最大传输单元MTU(Maximum Transfer Unit)。当数据是可打印的ASCII码，帧定界可以用特殊的帧定界符SOH(Start of Header)(00000001)和EOT(End of Transmission)(00000100)</p>
+<p><img src="/Users/zhangqiushi/Library/Application Support/typora-user-images/image-20190503134026958.png" alt="image-20190503134026958"><br>帧的最大长度为1522字节,其中1500字节是payload:</p>
+<blockquote>
+<p> 图片摘自阮一峰的博客<a href="http://www.ruanyifeng.com/blog/2017/06/tcp-protocol.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2017/06/tcp-protocol.html</a></p>
+</blockquote>
+<p><img src="/Users/zhangqiushi/Downloads/net_package.png" alt="net_package"></p>
+</li>
+</ul>
+<ul>
+<li><p>透明传输</p>
+</li>
+<li><p>传输的数据中任何8比特的组合不允许和帧定界的控制字符比特一样，否则会出现帧定界错误。文本文件不会产生这样的问题，可以实现透明传输。但是如果是二进制文件，可能会找到错误的帧边界。解决方法是采用字节填充。在SOH和EOT的前面加上转义字符ESC(1B)，如果数据中存在转义字符，就在转义字符前插入个转义字符(11011)</p>
+</li>
+<li><p>差错控制<br>使用循环冗余检验CRC(Cyclic Redundancy Check)，添加帧检验序列FCS(Frame Check Sequence)</p>
+<p>差错校验保证传递过来的帧无差错，但是数据链路层不提供可靠服务，还是存在帧丢失、帧重复、帧失序的问题</p>
+</li>
+</ul>
+<h4 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a>传输层</h4><p>常见的协议有TCP,UDP等</p>
+<p>TCP 是一种<strong>面向连接的</strong>协议，它给用户进程提供<strong>可靠的全双工的</strong>字节流。确保数据包的可靠，有序，以及支持流量控制。</p>
+<p>一个TCP包最长1480字节,payload大概1460左右.因此，一条1500字节的信息需要两个 TCP 数据包。HTTP/2 协议的一大改进， 就是压缩 HTTP 协议的头信息，使得一个 HTTP 请求可以放在一个 TCP 数据包里面，而不是分成多个，这样就提高了速度。</p>
+<p><strong>tcp和udp的区别</strong></p>
+<ul>
+<li>tcp是面向连接的,也就是说，在收发数据前，必须和对方建立可靠的连接。upd是无连接的,传输数据之前源端和终端不建立连接， 当它想传送时就简单地去抓取来自应用程序的数据，并尽可能快地把它扔到网络上。 </li>
+<li>tcp是可靠的,而udp是不可靠的,upd不保证数据不丢失,也不保证package顺序,可靠性只能通过上层应用把控</li>
+<li>tcp因为是面向连接的,所以只能点对点传输,而upd因为不建立链接不需要维护状态,可以广播</li>
+<li>udp信息包的标题很短，只有8个字节，相对于TCP的20个字节信息包的额外开销很小。</li>
+</ul>
+<p>可见udp更适合对实时性要求高的广播而tcp适合可靠传输</p>
+<h4 id="网络层"><a href="#网络层" class="headerlink" title="网络层"></a>网络层</h4><p>网络层提供路由和寻址的功能，使两终端系统能够互连且决定最佳路径，并具有一定的拥塞控制和流量控制的能力。</p>
+<p>网络层常见协议有IP，ICMP，OSPF，EIGRP，IGMP等</p>
+<h4 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h4><p>是OSI参考模型的最高层，它是计算机用户，以及各种应用程序和网络之间的接口，其功能是直接向用户提供服务，完成用户希望在网络上完成的各种工作。</p>
+<p>常见协议HTTP,FTP,SNMP等</p>
+<h3 id="TCP协议"><a href="#TCP协议" class="headerlink" title="TCP协议"></a>TCP协议</h3><h4 id="SEQ"><a href="#SEQ" class="headerlink" title="SEQ"></a>SEQ</h4><p>tcp包在发送时会为每一个包编号,称为sequence number(SEQ),以便接收的一方按照顺序还原。万一发生丢包，也可以知道丢失的是哪一个包。</p>
+<p>包的下一个seq即next seq=seq+payload 比如当前seq=1,payload长度为1400,那下一个seq就应该是1401.</p>
+<h4 id="三次握手"><a href="#三次握手" class="headerlink" title="三次握手"></a>三次握手</h4><p>TCP是面向连接的，无论哪一方向另一方发送数据之前，都必须先在双方之间建立一条连接。在TCP/IP协议中，TCP协议提供可靠的连接服务，连接是通过三次握手进行初始化的。三次握手的目的是同步连接双方的序列号和确认号并交换 TCP窗口大小信息。</p>
+<p>三次握手的图示如下:</p>
+<p><img src="/Users/zhangqiushi/Library/Application Support/typora-user-images/image-20190503222544384.png" alt="image-20190503222544384"></p>
+<p>wireshark抓包演示:</p>
+<p><img src="/Users/zhangqiushi/Library/Application Support/typora-user-images/image-20190503214011085.png" alt="image-20190503214011085"></p>
+<ul>
+<li>第一次client发起连接,发送一个SYN包表示建立连接,可以看到此时seq=0,payload长度也是0</li>
+<li><p>第二次server对client应答,并发送连接请求. 发送一个包flags标志位里既包含syn又包含ack此时ack=x+1=0+1=1 ,seq=0</p>
+</li>
+<li><p>第三次client接到server的应答后,对server的连接请求做应答,此时ack=y+1=0+1=1</p>
+</li>
+</ul>
+<h5 id="为什么需要三次握手"><a href="#为什么需要三次握手" class="headerlink" title="为什么需要三次握手?"></a>为什么需要三次握手?</h5><p>握手为什么是三次?不是两次或者四次?</p>
+<p>第一次握手是client发起连接请求,接到后<strong>server确认client能正常发送</strong>.</p>
+<p>第二次握手是server对client的应答,接收到后<strong>client确认server能正常接收,且能正常发送</strong></p>
+<p>第三次握手是client对server的应答,接收到后<strong>server确认client能正常接收</strong></p>
+<p>至此,双方就都能确保对方可以正常接收和发送数据,tcp通过三次握手保证了连接的可靠性</p>
+<h4 id="四次挥手"><a href="#四次挥手" class="headerlink" title="四次挥手"></a>四次挥手</h4><p>tcp连接断开的时候需要四次包发送操作,称为四次挥手:</p>
+<p><img src="/Users/zhangqiushi/Library/Application Support/typora-user-images/image-20190503224512958.png" alt="image-20190503224512958"></p>
+<p>wireshark抓包示例:(这里实际是server发出的断开请求,和上图相反)<br><img src="/Users/zhangqiushi/Library/Application Support/typora-user-images/image-20190503223327645.png" alt="image-20190503223327645"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/tcp/" rel="tag"># tcp</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/02/spring容器及springBoot启动分析/" rel="next" title="spring容器及springBoot启动分析">
+                <i class="fa fa-chevron-left"></i> spring容器及springBoot启动分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/03/tcp-ip简析-1/" rel="prev" title="tcp/ip简析">
+                tcp/ip简析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="neuSnail">
+            
+              <p class="site-author-name" itemprop="name">neuSnail</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#OSI七层模型与TCP-IP五层模型"><span class="nav-number">1.</span> <span class="nav-text">OSI七层模型与TCP/IP五层模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#物理层"><span class="nav-number">1.1.</span> <span class="nav-text">物理层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据链路层"><span class="nav-number">1.2.</span> <span class="nav-text">数据链路层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#传输层"><span class="nav-number">1.3.</span> <span class="nav-text">传输层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#网络层"><span class="nav-number">1.4.</span> <span class="nav-text">网络层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#应用层"><span class="nav-number">1.5.</span> <span class="nav-text">应用层</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP协议"><span class="nav-number">2.</span> <span class="nav-text">TCP协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SEQ"><span class="nav-number">2.1.</span> <span class="nav-text">SEQ</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三次握手"><span class="nav-number">2.2.</span> <span class="nav-text">三次握手</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#为什么需要三次握手"><span class="nav-number">2.2.1.</span> <span class="nav-text">为什么需要三次握手?</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四次挥手"><span class="nav-number">2.3.</span> <span class="nav-text">四次挥手</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">neuSnail</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -87,14 +87,14 @@
 <meta property="og:site_name" content="neuSnail&#39;s blog">
 <meta property="og:description" content="StructureReentrantLock的结构如下图所示，其中Sync是ReentrantLock的抽象内部静态类,继承自AQS。FairSync和NonfairSync继承Sync. AQS使用了模板方法的模式，一个模板方法是定义在抽象类中的，把基本操作方法组合在一起形成一个总算法或一个总行为的方法。一个抽象类可以有任意多个模板方法，而不限于一个。每一个模板方法都可以调用任意多个具体方法。A">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNc79ly1g2a9grwcg9j308j08wglr.jpg">
-<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNc79ly1g2a9smfp74j30f50bsgmj.jpg">
+<meta property="og:image" content="https://gitee.com/neusnail/img/raw/master/blogimg/struct.png">
+<meta property="og:image" content="https://gitee.com/neusnail/img/raw/master/blogimg/structure2.png">
 <meta property="og:image" content="https://gitee.com/neusnail/img/raw/master/blogimg/condition.png">
-<meta property="og:updated_time" content="2019-04-23T11:39:51.026Z">
+<meta property="og:updated_time" content="2019-04-29T13:58:45.840Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ReentrantLock代码分析">
 <meta name="twitter:description" content="StructureReentrantLock的结构如下图所示，其中Sync是ReentrantLock的抽象内部静态类,继承自AQS。FairSync和NonfairSync继承Sync. AQS使用了模板方法的模式，一个模板方法是定义在抽象类中的，把基本操作方法组合在一起形成一个总算法或一个总行为的方法。一个抽象类可以有任意多个模板方法，而不限于一个。每一个模板方法都可以调用任意多个具体方法。A">
-<meta name="twitter:image" content="https://ws4.sinaimg.cn/large/006tNc79ly1g2a9grwcg9j308j08wglr.jpg">
+<meta name="twitter:image" content="https://gitee.com/neusnail/img/raw/master/blogimg/struct.png">
 
 
 
@@ -357,7 +357,7 @@
 
       
         <h3 id="Structure"><a href="#Structure" class="headerlink" title="Structure"></a>Structure</h3><p>ReentrantLock的结构如下图所示，其中Sync是ReentrantLock的抽象内部静态类,继承自AQS。FairSync和NonfairSync继承Sync.</p>
-<p><img src="https://ws4.sinaimg.cn/large/006tNc79ly1g2a9grwcg9j308j08wglr.jpg" alt="image-20190421141918076"><br>AQS使用了模板方法的模式，一个模板方法是定义在抽象类中的，把基本操作方法组合在一起形成一个总算法或一个总行为的方法。一个抽象类可以有任意多个模板方法，而不限于一个。每一个模板方法都可以调用任意多个具体方法。<br>AQS中的模板方法有 acquire,acquireShared,release,releaseShared等,而模板方法通过调用子类实现的具体方法(钩子)来实现。<br>AQS中定义的钩子方法：</p>
+<p><img src="https://gitee.com/neusnail/img/raw/master/blogimg/struct.png" alt="image-20190421141918076"><br>AQS使用了模板方法的模式，一个模板方法是定义在抽象类中的，把基本操作方法组合在一起形成一个总算法或一个总行为的方法。一个抽象类可以有任意多个模板方法，而不限于一个。每一个模板方法都可以调用任意多个具体方法。<br>AQS中的模板方法有 acquire,acquireShared,release,releaseShared等,而模板方法通过调用子类实现的具体方法(钩子)来实现。<br>AQS中定义的钩子方法：</p>
 <ul>
 <li>tryAcquire</li>
 <li>tryRelease</li>
@@ -366,7 +366,7 @@
 <li>isHeldExclusively</li>
 </ul>
 <p>钩子方法不需要全部重写，没重写的钩子方法默认会抛出UnsupportedOperationException。</p>
-<p><img src="https://ws4.sinaimg.cn/large/006tNc79ly1g2a9smfp74j30f50bsgmj.jpg" alt="image-20190421145309101"></p>
+<p><img src="https://gitee.com/neusnail/img/raw/master/blogimg/structure2.png" alt="image-20190421145309101"></p>
 <h3 id="Lock"><a href="#Lock" class="headerlink" title="Lock"></a>Lock</h3><p>ReentrantLok构造函数时候可以指定使用公平性，不指定的话默认使用非公平锁。所谓公平就是按锁等待时间排序，非公平就是lock时候立即尝试获取一次能抢到就用,抢不到再去acquire排队。非公平效率更高一些所以默认使用非公平。但是非公平可能导致线程饥饿，即一个线程一直被其他线程抢占锁导致长时间获取不到锁。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ReentrantLock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    sync = <span class="keyword">new</span> NonfairSync();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ReentrantLock</span><span class="params">(<span class="keyword">boolean</span> fair)</span> </span>&#123;</span><br><span class="line">        sync = fair ? <span class="keyword">new</span> FairSync() : <span class="keyword">new</span> NonfairSync();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//ReentrantLock的lock方法</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        sync.lock();</span><br><span class="line">		&#125;</span><br><span class="line"><span class="comment">//NoneFairSycn的lock实现</span></span><br><span class="line"> <span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   			<span class="comment">// 先立即尝试一下加锁(非公平)</span></span><br><span class="line">        <span class="keyword">if</span> (compareAndSetState(<span class="number">0</span>, <span class="number">1</span>))</span><br><span class="line">            setExclusiveOwnerThread(Thread.currentThread());</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">          <span class="comment">//获取不到再去acquire</span></span><br><span class="line">            acquire(<span class="number">1</span>)</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">//compareAndSetState通过unsafe的CAS实现(jdk9之后用的是VarHandler)</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">compareAndSetState</span><span class="params">(<span class="keyword">int</span> expect, <span class="keyword">int</span> update)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// See below for intrinsics setup to support this</span></span><br><span class="line">        <span class="keyword">return</span> unsafe.compareAndSwapInt(<span class="keyword">this</span>, stateOffset, expect, update);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
@@ -452,6 +452,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2019/05/02/spring容器及springBoot启动分析/" rel="prev" title="spring容器及springBoot启动分析">
+                spring容器及springBoot启动分析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -529,7 +533,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -551,7 +555,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
