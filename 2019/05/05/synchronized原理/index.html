@@ -88,8 +88,10 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/Users/zhangqiushi/Downloads/objectHead.jpg">
 <meta property="og:image" content="http://yoursite.com/Users/zhangqiushi/Library/Application%20Support/typora-user-images/image-20190505112030175.png">
+<meta property="og:image" content="http://yoursite.com/Users/zhangqiushi/Library/Application%20Support/typora-user-images/image-20190505155648697.png">
+<meta property="og:image" content="http://yoursite.com/Users/zhangqiushi/Library/Application%20Support/typora-user-images/image-20190505155700096.png">
 <meta property="og:image" content="http://yoursite.com/Users/zhangqiushi/Downloads/syn.png">
-<meta property="og:updated_time" content="2019-05-05T05:28:22.817Z">
+<meta property="og:updated_time" content="2019-05-05T07:57:07.911Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="neuSnail&#39;s blog">
 <meta name="twitter:description" content="分类 修饰实例方法，作用于当前实例加锁，进入同步代码前要获得当前实例的锁 修饰静态方法，作用于当前类对象加锁，进入同步代码前要获得当前类对象的锁 修饰代码块，指定加锁对象，对给定对象加锁，进入同步代码库前要获得给定对象的锁。  对象头  当一个对象已经计算过identity hash code，它就无法进入偏向锁状态；  当一个对象当前正处于偏向锁状态，并且需要计算其identity hash c">
@@ -355,6 +357,16 @@
 <h5 id="同步方法"><a href="#同步方法" class="headerlink" title="同步方法"></a>同步方法</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">  public synchronized void syncTask();</span><br><span class="line">    descriptor: ()V</span><br><span class="line">    //方法标识ACC_PUBLIC代表public修饰，ACC_SYNCHRONIZED指明该方法为同步方法</span><br><span class="line">    flags: ACC_PUBLIC, ACC_SYNCHRONIZED</span><br><span class="line">    Code:</span><br><span class="line">      stack=3, locals=1, args_size=1</span><br><span class="line">         0: aload_0</span><br><span class="line">         1: dup</span><br><span class="line">         2: getfield      #2                  // Field i:I</span><br><span class="line">         5: iconst_1</span><br><span class="line">         6: iadd</span><br><span class="line">         7: putfield      #2                  // Field i:I</span><br><span class="line">        10: return</span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line 12: 0</span><br><span class="line">        line 13: 10</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>synchronized修饰的方法并没有monitorenter指令和monitorexit指令，取得代之的确实是ACC_SYNCHRONIZED标识，该标识指明了该方法是一个同步方法，JVM通过该ACC_SYNCHRONIZED访问标志来辨别一个方法是否声明为同步方法，从而执行相应的同步调用。</p>
 <h3 id="轻量级锁"><a href="#轻量级锁" class="headerlink" title="轻量级锁"></a>轻量级锁</h3><p>轻量级锁能够提升程序性能的依据是“对绝大部分的锁，在整个同步周期内都不存在竞争”，注意这是经验数据。需要了解的是，轻量级锁所适应的场景是线程交替执行同步块的场合，如果存在同一时间访问同一锁的场合，就会导致轻量级锁膨胀为重量级锁。</p>
+<p>1、<strong>轻量级锁的加锁过程</strong></p>
+<p>　　（1）在代码进入同步块的时候，如果同步对象锁状态为无锁状态（锁标志位为“01”状态，是否为偏向锁为“0”），虚拟机首先将在当前线程的栈帧中建立一个名为锁记录（Lock Record）的空间，用于存储锁对象目前的Mark Word的拷贝，官方称之为 Displaced Mark Word。这时候线程堆栈与对象头的状态如图2.1所示。</p>
+<p>　　（2）拷贝对象头中的Mark Word复制到锁记录中。</p>
+<p>　　（3）拷贝成功后，虚拟机将使用CAS操作尝试将对象的Mark Word更新为指向Lock Record的指针，并将Lock record里的owner指针指向object mark word。如果更新成功，则执行步骤（3），否则执行步骤（4）。</p>
+<p>　　（4）如果这个更新动作成功了，那么这个线程就拥有了该对象的锁，并且对象Mark Word的锁标志位设置为“00”，即表示此对象处于轻量级锁定状态，这时候线程堆栈与对象头的状态如图2.2所示。</p>
+<p>　　（5）如果这个更新操作失败了，虚拟机首先会检查对象的Mark Word是否指向当前线程的栈帧，如果是就说明当前线程已经拥有了这个对象的锁，那就可以直接进入同步块继续执行。否则说明多个线程竞争锁，轻量级锁就要膨胀为重量级锁，锁标志的状态值变为“10”，Mark Word中存储的就是指向重量级锁（互斥量）的指针，后面等待锁的线程也要进入阻塞状态。 而当前线程便尝试使用自旋来获取锁，自旋就是为了不让线程阻塞，而采用循环去获取锁的过程。</p>
+<p>​            <img src="/Users/zhangqiushi/Library/Application Support/typora-user-images/image-20190505155648697.png" alt="image-20190505155648697"></p>
+<p>​                     图2.1 轻量级锁CAS操作之前堆栈与对象的状态</p>
+<p><img src="/Users/zhangqiushi/Library/Application Support/typora-user-images/image-20190505155700096.png" alt="image-20190505155700096"></p>
+<p>​                      图2.2 轻量级锁CAS操作之后堆栈与对象的状态</p>
 <h3 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h3><p>经过研究发现，在大多数情况下，锁不仅不存在多线程竞争，而且总是由同一线程多次获得，因此为了减少同一线程获取锁(会涉及到一些CAS操作,耗时)的代价而引入偏向锁。偏向锁的核心思想是，如果一个线程获得了锁，那么锁就进入偏向模式，此时Mark Word 的结构也变为偏向锁结构，当这个线程再次请求锁时，无需再做任何同步操作</p>
 <p><img src="/Users/zhangqiushi/Downloads/syn.png" alt="syn"></p>
 
@@ -381,8 +393,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/05/03/tcp-ip简析-1/" rel="next" title="tcp/ip简析">
-                <i class="fa fa-chevron-left"></i> tcp/ip简析
+              <a href="/2019/05/03/tcp-ip简析/" rel="next" title="tcp简析">
+                <i class="fa fa-chevron-left"></i> tcp简析
               </a>
             
           </div>
@@ -468,7 +480,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
